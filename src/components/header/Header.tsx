@@ -1,21 +1,23 @@
-import { PAGES } from "../../routes/constants";
+import {PAGES} from "../../routes/constants";
 import * as React from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { HeaderContainer } from "./Header.styles";
-import { useAuthUser } from "../../open-id/useAuthUser";
+import {HeaderContainer} from "./Header.styles";
+import {useAuthUser} from "../../open-id/useAuthUser";
 import Logout from "../logout";
 import Login from "../login";
 import Register from "../register";
-import { DividerCol, FlexCenter } from "../../theme/icons/theme";
-import { styled, alpha } from "@mui/material/styles";
+import {DividerCol, FlexCenter} from "../../theme/icons/theme";
+import {alpha, styled} from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import NotificationsIcon from "@mui/icons-material/Notifications";
+import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
+import {useNavigate} from "react-router-dom";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -69,6 +71,8 @@ function Header() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
+  const navigate = useNavigate()
   return (
     <HeaderContainer>
       <h2>SecondLife</h2>
@@ -82,6 +86,23 @@ function Header() {
         />
       </Search>
       <FlexCenter>
+
+        <IconButton
+            size="large"
+            aria-label="show 17 new notifications"
+            color="inherit"
+            style={{
+              margin: "0px 10px",
+            }}
+            onClick={()=> navigate(PAGES.cart,{replace: true})}
+        >
+          <Badge  badgeContent={10} color="error">
+            <ShoppingCartIcon/>
+
+          </Badge>
+        </IconButton>
+
+
         <IconButton
           size="large"
           aria-label="show 17 new notifications"

@@ -59,6 +59,7 @@
     "vite": "^4.4.5",
     "vite-plugin-mkcert": "^1.16.0"
   },
+
   "browserslist": {
     "production": [
       ">0.2%",
