@@ -4,7 +4,8 @@ import RegisterSell from '../pages/registerSell/RegisterSell';
 import Profile from '../pages/profile/Profile';
 import DetailProduct from '../pages/detailProduct/DetailProduct';
 import {Cart} from "../pages/cart";
-
+import listProduct from '../pages/listProduct';
+import SellProduct from '../pages/Sell';
 
 const PAGES = {
     home: '/' ,
@@ -12,8 +13,9 @@ const PAGES = {
     registerSell: '/register-sell',
     profile: '/profile',
     detailProduct: '/detail-product',
-    cart:'/cart'
-
+    cart:'/cart',
+    listProduct: '/list-product',
+    sellProduct: '/upload-product'
 };
 
 const publicRouter = [
@@ -23,8 +25,8 @@ const publicRouter = [
     { path: PAGES.profile, component: Profile },
     { path: PAGES.detailProduct, component: DetailProduct },
     { path: PAGES.cart, component: Cart },
-
-
+    { path: PAGES.listProduct, component: listProduct },
+    { path: PAGES.sellProduct, component: SellProduct },
 ] ;
 // const privateRoutes = [];
 

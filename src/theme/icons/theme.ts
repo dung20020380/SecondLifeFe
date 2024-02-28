@@ -1,4 +1,4 @@
-import { Color, createTheme } from '@mui/material';
+import { Color, Divider, createTheme } from '@mui/material';
 import styled, { css } from 'styled-components';
 
 
@@ -8,6 +8,8 @@ type Props = {
     color?: string,
     height?: string,
     flexColumn?: boolean,
+    justifyContent? : string,
+    alignItems?: string,
 
 }
 export const customTheme = createTheme({
@@ -27,8 +29,8 @@ export const customTheme = createTheme({
 });
 
 export const styledTheme = {
-    primary: '#1CB098',
-    secondary: '#E06119',
+    primary: '#3A7BD5',
+    secondary: '#f15d62',
     orangeColor: '#E06119',
     mainColor: '1CB098',
     yellowColor: '#FFC000',
@@ -62,10 +64,12 @@ export  const DividerCol = styled.div<Props>`
 `
 export  const FlexCenter = styled.div<Props>`
     display: flex;
-    justify-content: center;
-    align-items: center;
-    
-    ${(props) => props.flexColumn ? `
-        flex-direction: column;
-    ` : ''};
+    justify-content: ${(props) => props.justifyContent || "center"}  ;
+    align-items: ${(props) => props.alignItems || "center"}  ;
+    flex-direction: ${(props) => props.flexColumn ? 'column' : 'row'};
+  
+`
+export const DividerRow = styled(Divider)`
+  margin-top: 1rem !important;
+  margin-right: 1rem !important;
 `

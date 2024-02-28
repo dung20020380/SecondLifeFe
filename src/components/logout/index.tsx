@@ -1,8 +1,8 @@
-import { useAuthUser } from "../../open-id/useAuthUser";
+import { useSelector } from "react-redux";
 
 export default function Logout() {
-  const authUser = useAuthUser();
-  const bffLogoutUrl = authUser?.user?.bffLogoutUrl;
+  const authUser = useSelector((state: any) => state.user);
+  const bffLogoutUrl = authUser?.bffLogoutUrl;
   return (
     <a
       style={{

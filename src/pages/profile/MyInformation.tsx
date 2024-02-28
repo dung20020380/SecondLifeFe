@@ -1,19 +1,8 @@
-import {
-  FormControlLabel,
-  Grid,
-  MenuItem,
-  Modal,
-  Radio,
-  RadioGroup,
-  Select,
-  TextField,
-} from "@mui/material";
+import { FormControlLabel, Grid, Radio, RadioGroup } from "@mui/material";
 import { Box } from "@mui/joy";
-// import Button from '@mui/material/Button';
+import Button from "@mui/material/Button";
 import { useForm, Controller } from "react-hook-form";
 import {
-  Button,
-  CloseImage,
   Input,
   SpanText,
   SpanTextRegister,
@@ -21,13 +10,13 @@ import {
   ModalBody,
   TitleHeader,
 } from "./Profile.styles";
-import ClearIcon from "@mui/icons-material/Clear";
 import DatePicker from "react-datepicker";
 import moment from "moment";
 import useProfile from "../../api/useProfile";
 import { Profile } from "../../model/profile";
-import { useDispatch, useSelector } from "react-redux";
 import { useEffect } from "react";
+import { FlexCenter } from "../../theme/icons/theme";
+import { dataUser } from "../../model/user";
 
 type FormValues = {
   email?: string;
@@ -37,7 +26,7 @@ type FormValues = {
   birthday?: string;
   address?: string;
 };
-const MyInformation = () => {
+const MyInformation = ({ dataUser }: { dataUser?: dataUser }) => {
   const { addNoteMutation, data, isLoading } = useProfile();
 
   useEffect(() => {
@@ -46,7 +35,7 @@ const MyInformation = () => {
     setValue("phone", data?.phoneNumber);
     setValue("gender", data?.gender);
     setValue("birthday", moment(data?.dateOfBirth).format("DD-MM-YYYY"));
-    setValue("address", data?.address);
+    setValue("address", dataUser?.addressDefault);
   }, [data]);
 
   const {
@@ -84,21 +73,9 @@ const MyInformation = () => {
   //   }
   //   return "Mật khẩu và mật khẩu xác nhận không khớp.";
   // }
-  function validatePassword(password: string) {
-    if (password.length < 8) {
-      return "Ít nhất 8 ký tự";
-    }
-
-    const hasNumber = /\d/.test(password);
-    const hasLetter = /[a-zA-Z]/.test(password);
-
-    if (hasNumber && hasLetter) {
-      return true;
-    }
-    return "Mật khẩu phải chứa cả số và chữ";
-  }
 
   const onSubmit = (data: FormValues) => {
+    console.log("123");
     const newObj: Profile = {
       Address: data?.address,
       Gender: data.gender,
@@ -107,36 +84,49 @@ const MyInformation = () => {
       Email: data.email,
       PhoneNumber: data.phone,
     };
+    addNoteMutation.mutate(newObj);
   };
 
   return (
     <Box className="bodyBox" sx={{ width: "100%", marginLeft: "50px" }}>
-      <form
+      {/* <form
         style={{ display: "flex", justifyContent: "center", flex: "1" }}
         onSubmit={handleSubmit(onSubmit)}
         noValidate
+      > */}
+      <FormRow
+        style={{
+          display: "flex",
+          justifyContent: "center",
+          flex: "1",
+          userSelect: "none",
+        }}
       >
-        <FormRow
+        <Grid
+          container
+          spacing={1}
           style={{
-            display: "flex",
-            justifyContent: "center",
-            flex: "1",
-            userSelect: "none",
+            borderRadius: 16,
+            backgroundColor: "#ffffff",
           }}
         >
-          <Grid
-            container
-            style={{
-              borderRadius: 16,
-              backgroundColor: "#ffffff",
-            }}
-          >
-            <TitleHeader>Thay đổi thông tin cá nhân</TitleHeader>
+          <FlexCenter justifyContent="space-between" alignItems="baseline">
+            <TitleHeader
+              style={{
+                marginTop: 8,
+                marginLeft: 8,
+              }}
+            >
+              Thay đổi thông tin cá nhân
+            </TitleHeader>
+          </FlexCenter>
+
+          <Grid item sm={12}>
             <Grid container>
-              <Grid sm={2} display={"flex"} alignItems={"center"}>
+              <Grid sm={2.5} display={"flex"} alignItems={"center"}>
                 <SpanTextRegister>Họ và tên:</SpanTextRegister>
               </Grid>
-              <Grid sm={10}>
+              <Grid sm={7}>
                 <Controller
                   control={control}
                   name="name"
@@ -159,11 +149,13 @@ const MyInformation = () => {
                 </SpanText>
               </Grid>
             </Grid>
+          </Grid>
+          <Grid item sm={12}>
             <Grid container>
-              <Grid sm={2} display={"flex"} alignItems={"center"}>
+              <Grid sm={2.5} display={"flex"} alignItems={"center"}>
                 <SpanTextRegister>Số điện thoại:</SpanTextRegister>
               </Grid>
-              <Grid sm={10}>
+              <Grid sm={7}>
                 <Controller
                   control={control}
                   name="phone"
@@ -198,11 +190,13 @@ const MyInformation = () => {
                 </SpanText>
               </Grid>
             </Grid>
+          </Grid>
+          <Grid item sm={12}>
             <Grid container>
-              <Grid sm={2} display={"flex"} alignItems={"center"}>
+              <Grid sm={2.5} display={"flex"} alignItems={"center"}>
                 <SpanTextRegister>Email</SpanTextRegister>
               </Grid>
-              <Grid sm={10}>
+              <Grid sm={7}>
                 <Controller
                   control={control}
                   name="email"
@@ -222,6 +216,7 @@ const MyInformation = () => {
                       onChange={(e) => onChange(e.target.value)}
                       className="form-control"
                       placeholder="Địa chỉ email"
+                      readOnly
                     />
                   )}
                 />
@@ -231,18 +226,41 @@ const MyInformation = () => {
                   )}
                 </SpanText>
               </Grid>
+              <Grid
+                sm={1.5}
+                style={{
+                  display: "flex",
+                  flexDirection: "column",
+                  position: "relative",
+                  justifyContent: "center",
+                  margin: " auto",
+                }}
+              >
+                <Button
+                  type="submit"
+                  color="secondary"
+                  variant="outlined"
+                  sx={{
+                    fontSize: 12,
+                  }}
+                >
+                  Thay đổi
+                </Button>
+              </Grid>
             </Grid>
+          </Grid>
+          <Grid item sm={12}>
             <Grid container>
-              <Grid sm={2} display={"flex"} alignItems={"center"}>
+              <Grid sm={2.5} display={"flex"} alignItems={"center"}>
                 <SpanTextRegister>Địa chỉ:</SpanTextRegister>
               </Grid>
-              <Grid sm={10}>
+              <Grid sm={7}>
                 <Controller
                   control={control}
                   name="address"
-                  rules={{
-                    required: "Vui lòng nhập địa chỉ của bạn",
-                  }}
+                  // rules={{
+                  //   required: "Vui lòng nhập địa chỉ của bạn",
+                  // }}
                   render={({ field: { onChange, onBlur, value, ref } }) => (
                     <Input
                       checkName
@@ -250,20 +268,25 @@ const MyInformation = () => {
                       onChange={(e) => onChange(e.target.value)}
                       // className="form-control"
                       placeholder="Địa chỉ của tôi"
+                      readOnly
                     />
                   )}
                 />
                 <SpanText isCheckValidateUser>
-                  {errors?.name && <span> &#160; {errors.name.message}</span>}
+                  {errors?.address && (
+                    <span> &#160; {errors.address.message}</span>
+                  )}
                 </SpanText>
               </Grid>
             </Grid>
+          </Grid>
 
+          <Grid item sm={12}>
             <Grid container>
-              <Grid sm={2} display={"flex"} alignItems={"center"}>
+              <Grid sm={2.5} display={"flex"} alignItems={"center"}>
                 <SpanTextRegister>Giới tính</SpanTextRegister>
               </Grid>
-              <Grid sm={10}>
+              <Grid sm={7}>
                 <Controller
                   control={control}
                   name="gender"
@@ -296,11 +319,13 @@ const MyInformation = () => {
                 />
               </Grid>
             </Grid>
+          </Grid>
+          <Grid item sm={12}>
             <Grid container>
-              <Grid sm={2} display={"flex"} alignItems={"center"}>
-                <SpanTextRegister>Ngày Sinh</SpanTextRegister>
+              <Grid sm={2.5} display={"flex"} alignItems={"center"}>
+                <SpanTextRegister>Ngày sinh</SpanTextRegister>
               </Grid>
-              <Grid sm={10} display={"flex"} alignItems={"center"}>
+              <Grid sm={7} alignItems={"center"}>
                 <Controller
                   control={control}
                   name="birthday"
@@ -339,19 +364,31 @@ const MyInformation = () => {
             </Grid>
 
             <Grid
-              sm={12}
+              sm={7}
               style={{
                 display: "flex",
                 flexDirection: "column",
                 marginTop: 10,
                 position: "relative",
+                justifyContent: "center",
+                margin: "15px auto",
               }}
             >
-              <Button type="submit">Save</Button>
+              <Button
+                // onClick={() => console.log("123123")}
+                onClick={handleSubmit(onSubmit)}
+                variant="contained"
+                sx={{
+                  fontSize: 14,
+                }}
+              >
+                Save
+              </Button>
             </Grid>
           </Grid>
-        </FormRow>
-      </form>
+        </Grid>
+      </FormRow>
+      {/* </form> */}
     </Box>
   );
 };

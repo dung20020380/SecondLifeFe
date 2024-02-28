@@ -17,6 +17,9 @@ export type dataUser = {
     twoFactorEnabled: boolean,
     lockoutEnd: string,
     lockoutEnabled: boolean,
-    accessFailedCount: 0
+    accessFailedCount: 0,
+    profileImageUrl: string,
+    addressDefault: string,
+    addressList: [],
   };
   

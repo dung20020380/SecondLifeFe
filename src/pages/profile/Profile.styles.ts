@@ -32,13 +32,11 @@ interface StyledComponentProps {
 
 
 export const MainContent = styled.div`
-    height: '70vh';
-    display: 'flex';
-    align-items: 'center';
-    justify-content: 'center';
-    width: 80%;
-    margin: auto;
-    padding: 50px 10px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 50px 50px;
+    background-color: #fff;
     .css-1aquho2-MuiTabs-indicator {
         display: none;
     }
@@ -51,7 +49,18 @@ export const MainContent = styled.div`
     .MuiTab-root {
         align-items: start;
     }
-    
+    .css-2n3xfd {
+        border-bottom: none;
+    }
+    .css-r2lnhq-MuiTabs-indicator{
+        display: none;
+    }
+    .MuiTab-textColorPrimary {
+        font-size: 14px;
+    }
+    .MuiTooltip-popper {
+        font-size: 30px;
+    }
 
 `
 
@@ -80,6 +89,9 @@ export const Headerprofile = styled.div`
 `
 export const MainTab = styled.div`
   flex: 1;
+  .react-datepicker-wrapper {
+    width: 100%;
+  }
   .react-datepicker__input-container {
         
         input {
@@ -89,15 +101,16 @@ export const MainTab = styled.div`
     }
 `
 export const TitleHeader = styled.h2`
+    margin-bottom: 1rem;
+    color: #3A7BD5;
 `
 export const HeaderAddress = styled.div`
-    display: flex;
-    justify-content: space-between;
     flex: 1;
+    /* justify-content: space-between;
     align-items: center;
     button {
         height: 60%;
-    }
+    } */
 `
 
 

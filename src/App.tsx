@@ -1,12 +1,12 @@
 import usePostToken from "./api/usePostToken";
-import discounts from "./api/getDiscount";
 
 import React, { useEffect } from "react";
 import Routes from "./routes/routes";
 import "react-datepicker/dist/react-datepicker.css";
+import { useAuthUser } from "./open-id/useAuthUser";
 export default function App() {
-  // const authUser = useAuthUser();
-  const getdiscounts = discounts();
+  const authUser = useAuthUser();
+  // useApi();
   // const { mutate: postTokenMutation, data: token, error } = usePostToken();
   // useEffect(() => {
   //   // Trigger the mutation when the component mounts

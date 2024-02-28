@@ -6,4 +6,6 @@ export type Profile = {
     DateOfBirth?: string,
     Email?: string
 }
-
+export type ImageBase64 = {
+    Base64String  : string
+}

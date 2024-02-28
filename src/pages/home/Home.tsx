@@ -5,7 +5,10 @@ import TopProduct from "./topProduct";
 import { FlexCenter } from "../../theme/icons/theme";
 import { Swiper, SwiperSlide } from "swiper/react";
 import "swiper/css";
-import { HeaderHome, ImageSlide, MainApp } from "./home.styles";
+import { HeaderHome, ImageSlide, LinkDetail, MainApp } from "./home.styles";
+import { PAGES } from "../../routes/constants";
+import listproduct from "../../api/getProduct";
+import { catelory } from "../../components/header/navBar";
 
 export const ListDetailProduct = [
   {
@@ -136,16 +139,18 @@ export const ListDetailProduct = [
   },
 ];
 function Home() {
-  const ListProduct = [
-    "Điện tử",
-    "Thời trang và phụ kiện",
-    "Đồ gia dụng",
-    "Đồ chơi và đồ dùng trẻ em",
-    "Sách và bưu phòng phẩm",
-    "Thể thao dã ngoại",
-    "Sức khỏe và thể chất",
-    "Đồ miễn phí",
-  ];
+  const { data } = listproduct();
+
+  const ListCatelory = catelory.map((item) => item.name);
+  // const testData = data?.motorcycles;
+  let testData;
+  if (data) {
+    testData = Object.entries(data as Object).map(([key, value]) => ({
+      key,
+      value,
+    }));
+  }
+  // console.log("data", testData);
 
   return (
     <>
@@ -165,10 +170,17 @@ function Home() {
             padding: "20px 0",
           }}
         >
-          {ListProduct.map((item, index) => {
+          {ListCatelory.map((item, index) => {
             return (
               <Grid item xs={3} md={3} key={index}>
-                <FlexCenter flexColumn>
+                <LinkDetail
+                  href={PAGES.listProduct}
+                  style={{
+                    display: "flex",
+                    flexDirection: "column",
+                    alignItems: "center",
+                  }}
+                >
                   <ImageSlide
                     src="https://media.istockphoto.com/id/864417828/vi/vec-to/c%E1%BB%9D-vi%E1%BB%87t-nam.jpg?s=612x612&w=0&k=20&c=4wqSdySA6JkSO6Xw6m4255maL3mqQx4m0tTH3Q14u_U="
                     alt=""
@@ -186,14 +198,14 @@ function Home() {
                     {" "}
                     {item}
                   </p>
-                </FlexCenter>
+                </LinkDetail>
               </Grid>
             );
           })}
         </Grid>
       </div>
       <div>
-        <TopProduct />
+        <TopProduct listProduct={testData} />
       </div>
       <div>
         <FreeProduct />

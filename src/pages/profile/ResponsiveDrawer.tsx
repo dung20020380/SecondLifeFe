@@ -3,7 +3,7 @@ import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
 import Typography from "@mui/material/Typography";
 import Box from "@mui/material/Box";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import BorderColorIcon from "@mui/icons-material/BorderColor";
 import Avatar from "react-avatar-edit";
 
@@ -14,6 +14,7 @@ import {
   DialogContent,
   DialogActions,
   Avatar as AvatarMaterial,
+  Tooltip,
 } from "@mui/material";
 import {
   DialogButtons,
@@ -25,6 +26,9 @@ import {
 import MyInformation from "./MyInformation";
 import Password from "./Password";
 import Address from "./Address";
+import { useSelector } from "react-redux";
+import HtmlTooltip from "../../components/ToolTip";
+import useProfile from "../../api/useProfile";
 
 interface TabPanelProps {
   children?: React.ReactNode;
@@ -60,16 +64,23 @@ function a11yProps(index: number) {
 }
 
 export default function BasicTabs() {
+  const { data, changeImgProfile, addArressApi } = useProfile();
+
   const [value, setValue] = React.useState(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
     setValue(newValue);
   };
+  const userData = useSelector((state: any) => state.user.user);
 
   //   image
-  const [image, setImage] = useState("");
+  const [image, setImage] = useState(data?.profileImageUrl);
+  console.log("userData1", image);
   const [imageCrop, setImageCrop] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [preview, setPreview] = useState("");
+  useEffect(() => {
+    setImage(data?.profileImageUrl);
+  }, [data]);
 
   const handleOpenDialog = () => {
     setOpenDialog(true);
@@ -82,6 +93,11 @@ export default function BasicTabs() {
   const handleSaveImageOnDialog = () => {
     setImage(preview);
     setOpenDialog(false);
+    // console.log(typeof preview);
+
+    changeImgProfile.mutate({
+      Base64String: preview,
+    });
   };
 
   const handleImageChange = (event: any) => {
@@ -127,13 +143,25 @@ export default function BasicTabs() {
               <BorderColorIcon />
             </button>
             <NameUser>
-              <p>Name</p>
-              <p>id: ASp123123</p>
+              <p>{data?.fullName}</p>
+              <HtmlTooltip title={userData.id}>
+                <p
+                  style={{
+                    display: "-webkit-box",
+                    overflow: "hidden",
+                    WebkitLineClamp: 1,
+                    WebkitBoxOrient: "vertical",
+                    width: "100px",
+                  }}
+                >
+                  Id:{userData.id}
+                </p>
+              </HtmlTooltip>
             </NameUser>
           </Headerprofile>
           {/* Dialog for image change */}
           <Dialog open={openDialog} onClose={handleCloseDialog}>
-            <DialogTitle>Change Profile Image</DialogTitle>
+            <DialogTitle>Thay đổi ảnh đại diện</DialogTitle>
             <DialogContent>
               {!imageCrop ? (
                 <input
@@ -182,10 +210,10 @@ export default function BasicTabs() {
       </Box>
       <MainTab>
         <CustomTabPanel value={value} index={0}>
-          <MyInformation />
+          <MyInformation dataUser={data} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          <Address />
+          <Address addArressApi={(data) => addArressApi.mutate(data)} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
           <Password />

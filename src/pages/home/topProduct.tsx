@@ -1,10 +1,18 @@
 import { Button, Grid } from "@mui/material";
 import { ListDetailProduct } from "./Home";
 import { FlexCenter } from "../../theme/icons/theme";
-import { HeaderHome, ImageSlide } from "./home.styles";
+import { HeaderHome, ImageSlide, LinkDetail } from "./home.styles";
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import { PAGES } from "../../routes/constants";
+import React, { Fragment } from "react";
 
-function TopProduct() {
+function TopProduct({ listProduct }: { listProduct?: any }) {
+  listProduct?.map((item: any, index: any) => {
+    item?.value?.map((subitem: any, index: any) => {
+      console.log("listProduct1", subitem?.price);
+    });
+  });
+
   return (
     <div
       style={{
@@ -34,29 +42,33 @@ function TopProduct() {
           marginTop: "5px",
         }}
       >
-        {ListDetailProduct.map((item, index) => {
-          return (
-            <Grid item xs={2} key={index}>
-              <FlexCenter
-                flexColumn
-                style={{
-                  alignItems: "start",
-                }}
-              >
-                <ImageSlide
-                  src={item.image}
-                  alt=""
+        {listProduct?.map((item: any, index: any) => (
+          <Fragment>
+            {item?.value?.map((subitem: any) => (
+              <Grid item xs={2} key={index}>
+                <FlexCenter
+                  flexColumn
                   style={{
-                    width: "100%",
+                    alignItems: "start",
                   }}
-                />
-                <p>{item.name}</p>
-                <p>{item.price}</p>
-                <p>{item.address}</p>
-              </FlexCenter>
-            </Grid>
-          );
-        })}
+                >
+                  <LinkDetail href={PAGES.detailProduct}>
+                    <ImageSlide
+                      src={subitem?.mediaInfo?.imageUrl}
+                      alt=""
+                      style={{
+                        width: "100%",
+                      }}
+                    />
+                    <p>{subitem?.listingInfo?.title}</p>
+                    <p>{subitem?.price}</p>
+                    {/* <p>{item.address}</p> */}
+                  </LinkDetail>
+                </FlexCenter>
+              </Grid>
+            ))}
+          </Fragment>
+        ))}
       </Grid>
     </div>
   );

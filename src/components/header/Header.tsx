@@ -1,23 +1,23 @@
-import {PAGES} from "../../routes/constants";
+import { PAGES } from "../../routes/constants";
 import * as React from "react";
 import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import {HeaderContainer} from "./Header.styles";
-import {useAuthUser} from "../../open-id/useAuthUser";
+import { HeaderContainer } from "./Header.styles";
 import Logout from "../logout";
 import Login from "../login";
 import Register from "../register";
-import {DividerCol, FlexCenter} from "../../theme/icons/theme";
-import {alpha, styled} from "@mui/material/styles";
+import { DividerCol, FlexCenter } from "../../theme/icons/theme";
+import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
 import SearchIcon from "@mui/icons-material/Search";
 import IconButton from "@mui/material/IconButton";
 import Badge from "@mui/material/Badge";
 import NotificationsIcon from "@mui/icons-material/Notifications";
-import ShoppingCartIcon from '@mui/icons-material/ShoppingCart';
-import {useNavigate} from "react-router-dom";
+import { useNavigate } from "react-router-dom";
+import ShoppingCartIcon from "@mui/icons-material/ShoppingCart";
+import { useSelector } from "react-redux";
 
 const Search = styled("div")(({ theme }) => ({
   position: "relative",
@@ -60,8 +60,10 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 }));
 
 function Header() {
-  const authUser = useAuthUser();
+  const authUser = useSelector((state: any) => state.user);
   console.log("authUser", authUser);
+
+  const navigate = useNavigate();
 
   const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
   const open = Boolean(anchorEl);
@@ -71,11 +73,15 @@ function Header() {
   const handleClose = () => {
     setAnchorEl(null);
   };
-
-  const navigate = useNavigate()
   return (
     <HeaderContainer>
-      <h2>SecondLife</h2>
+      <h2
+        onClick={() => {
+          navigate(PAGES.home, { replace: true });
+        }}
+      >
+        SecondLife
+      </h2>
       <Search>
         <SearchIconWrapper>
           <SearchIcon />
@@ -86,22 +92,19 @@ function Header() {
         />
       </Search>
       <FlexCenter>
-
         <IconButton
-            size="large"
-            aria-label="show 17 new notifications"
-            color="inherit"
-            style={{
-              margin: "0px 10px",
-            }}
-            onClick={()=> navigate(PAGES.cart,{replace: true})}
+          size="large"
+          aria-label="show 17 new notifications"
+          color="inherit"
+          style={{
+            margin: "0px 10px",
+          }}
+          onClick={() => navigate(PAGES.cart, { replace: true })}
         >
-          <Badge  badgeContent={10} color="error">
-            <ShoppingCartIcon/>
-
+          <Badge badgeContent={10} color="error">
+            <ShoppingCartIcon />
           </Badge>
         </IconButton>
-
 
         <IconButton
           size="large"
@@ -115,7 +118,7 @@ function Header() {
             <NotificationsIcon />
           </Badge>
         </IconButton>
-        {authUser.user ? (
+        {authUser.user.roles ? (
           <>
             <div>
               <Button
@@ -148,6 +151,16 @@ function Header() {
                   </a>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
+                  <a
+                    style={{
+                      textDecoration: "none",
+                    }}
+                    href={PAGES.sellProduct}
+                  >
+                    Đăng bán
+                  </a>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
                   <Logout></Logout>
                 </MenuItem>
               </Menu>
@@ -156,8 +169,8 @@ function Header() {
         ) : (
           <FlexCenter>
             <Login></Login>
-            <DividerCol color="#FFF" height="20px"></DividerCol>
-            <Register></Register>
+            {/* <DividerCol color="#FFF" height="20px"></DividerCol> */}
+            {/* <Register></Register> */}
           </FlexCenter>
         )}
       </FlexCenter>
