@@ -76,7 +76,7 @@ function RatingMain() {
           background: " rgba(241, 93, 98,0.1)",
         }}
       >
-        <FlexCenter flexColumn>
+        <FlexCenter flexcolumn={"true"}>
           <p
             style={{
               color: styledTheme.secondary,
@@ -196,7 +196,7 @@ function RatingMain() {
                     marginRight: 15,
                   }}
                 />
-                <FlexCenter flexColumn alignItems="start">
+                <FlexCenter flexcolumn={"true"} alignItems="start">
                   <p
                     style={{
                       color: styledTheme.primary,

@@ -1,4 +1,4 @@
-import { HeaderAddress, TitleHeader } from "./Profile.styles";
+import { HeaderAddress, SpanText, TitleHeader } from "./Profile.styles";
 import Button from "@mui/material/Button";
 import AddIcon from "@mui/icons-material/Add";
 import {
@@ -21,7 +21,7 @@ import { useQuery } from "react-query";
 import { Controller, useForm } from "react-hook-form";
 import { DividerCol, FlexCenter, styledTheme } from "../../theme/icons/theme";
 import { useDispatch, useSelector } from "react-redux";
-import { addUser } from "../../redux/user/userSlice";
+import { dataUser } from "../../model/user";
 
 type FormValues = {
   name: string;
@@ -33,11 +33,17 @@ type FormValues = {
   addressDetail: string;
 };
 
-function Address({ addArressApi }: { addArressApi: (data: {}) => void }) {
+function Address({
+  addArressApi,
+  setDedaultAddrress,
+  dataUser,
+}: {
+  addArressApi: (data: {}) => void;
+  setDedaultAddrress: (data: {}) => void;
+  dataUser?: dataUser;
+}) {
   const [open, setOpen] = React.useState(false);
   const dispatch = useDispatch();
-  const user = useSelector((state: any) => state.user.user);
-  console.log("idUser", user);
 
   const {
     handleSubmit,
@@ -51,14 +57,10 @@ function Address({ addArressApi }: { addArressApi: (data: {}) => void }) {
 
   const filter = watch();
 
-  const handleDefaultAddress = () => {
-    dispatch(
-      addUser({
-        ...user,
-        address:
-          "Số 27, Ngách 83/51 Ngõ 83 Đường Tân Triều Xã Tân Triều, Huyện Thanh Trì, Hà Nội",
-      })
-    );
+  const handleDefaultAddress = (data: {}) => {
+    setDedaultAddrress({
+      address: data,
+    });
   };
   const handleClickOpen = () => {
     setOpen(true);
@@ -74,12 +76,13 @@ function Address({ addArressApi }: { addArressApi: (data: {}) => void }) {
       city: data.city.slice(data.city.indexOf(":") + 1),
       commune: data.commune.slice(data.commune.indexOf(":") + 1),
     };
+    setOpen(false);
     const returnData = `${uploadData.addressDetail}, ${uploadData.commune}, ${uploadData.district}, ${uploadData.city}`;
-    console.log("data12312312312312", returnData);
     addArressApi({
       address: returnData,
     });
   };
+  console.log("dataUserdataUser", dataUser);
 
   const getProvinces = async () => {
     const res = await axios.get("https://vapi.vnappmob.com/api/province/");
@@ -138,72 +141,145 @@ function Address({ addArressApi }: { addArressApi: (data: {}) => void }) {
             </p>
           </Button>
         </FlexCenter>
-        <Dialog open={open} onClose={handleClose} fullWidth>
-          <DialogTitle
-            sx={{
-              fontSize: 18,
-              fontWeight: 600,
-              color: styledTheme.primary,
-            }}
-          >
-            Thêm địa chỉ mới
-          </DialogTitle>
-          <DialogContent>
-            <Grid container spacing={2}>
-              <Grid item sm={6}>
-                <Controller
-                  control={control}
-                  name="name"
-                  defaultValue=""
-                  render={({ field: { onBlur, onChange, value } }) => (
-                    <TextField
-                      autoFocus
-                      required
-                      margin="dense"
-                      id="name"
-                      name="name"
-                      value={value}
-                      onChange={(e) => onChange(e.target.value)}
-                      label="Họ và tên"
-                      fullWidth
-                      variant="outlined"
-                      className="w-1/2"
-                    />
-                  )}
-                />
-              </Grid>
-              <Grid item sm={6}>
-                <Controller
-                  control={control}
-                  name="phone"
-                  defaultValue=""
-                  render={({ field: { onBlur, onChange, value } }) => (
-                    <TextField
-                      required
-                      margin="dense"
-                      id="phone"
-                      name="phone"
-                      label="Số điện thoại"
-                      type="phone"
-                      value={value}
-                      onChange={(e) => onChange(e.target.value)}
-                      fullWidth
-                      variant="outlined"
-                    />
-                  )}
-                />
-              </Grid>
-            </Grid>
 
+        {React.Children.toArray(
+          dataUser?.addressList?.map((item) => (
+            <FlexCenter
+              justifyContent="space-between"
+              style={{
+                padding: " 20px 0",
+                borderBottom: "1px solid #807f7f",
+              }}
+            >
+              <FlexCenter
+                flexcolumn={"true"}
+                justifyContent="start"
+                alignItems="start"
+                style={{
+                  maxWidth: "70%",
+                }}
+              >
+                <p
+                  style={{
+                    display: "flex",
+                    fontSize: 16,
+                    margin: "5px 0",
+                  }}
+                >
+                  {dataUser.fullName}
+                  <DividerCol color="#161515" height="20px"></DividerCol>{" "}
+                  {dataUser.phoneNumber}
+                </p>
+                <p
+                  style={{
+                    maxWidth: "60%",
+                    fontWeight: 300,
+                  }}
+                >
+                  {item}
+                </p>
+              </FlexCenter>
+              <FlexCenter
+                flexcolumn={"true"}
+                justifyContent="end"
+                alignItems="end"
+              >
+                <Button
+                  variant="text"
+                  style={{
+                    marginBottom: "1rem",
+                    fontSize: 14,
+                  }}
+                >
+                  Cập nhật
+                </Button>
+                <Button
+                  variant="outlined"
+                  color="secondary"
+                  style={{
+                    fontSize: 14,
+                  }}
+                  onClick={handleDefaultAddress}
+                >
+                  Thiết lập mặc định
+                </Button>
+              </FlexCenter>
+            </FlexCenter>
+          ))
+        )}
+      </HeaderAddress>
+      {/* <MainAddress>
+
+      </MainAddress> */}
+      <Dialog open={open} onClose={handleClose} fullWidth>
+        <DialogTitle
+          sx={{
+            fontSize: 18,
+            fontWeight: 600,
+            color: styledTheme.primary,
+          }}
+        >
+          Thêm địa chỉ mới
+        </DialogTitle>
+        <DialogContent>
+          <Grid container spacing={2}>
+            <Grid item sm={6}>
+              <Controller
+                control={control}
+                name="name"
+                defaultValue=""
+                render={({ field: { onBlur, onChange, value } }) => (
+                  <TextField
+                    autoFocus
+                    required
+                    margin="dense"
+                    id="name"
+                    name="name"
+                    label="Họ và tên"
+                    value={dataUser?.fullName}
+                    onChange={(e) => onChange(e.target.value)}
+                    fullWidth
+                    variant="outlined"
+                    className="w-1/2"
+                  />
+                )}
+              />
+            </Grid>
+            <Grid item sm={6}>
+              <Controller
+                control={control}
+                name="phone"
+                defaultValue=""
+                render={({ field: { onBlur, onChange, value } }) => (
+                  <TextField
+                    required
+                    margin="dense"
+                    id="phone"
+                    name="phone"
+                    label="Số điện thoại"
+                    type="phone"
+                    value={dataUser?.phoneNumber}
+                    onChange={(e) => onChange(e.target.value)}
+                    fullWidth
+                    variant="outlined"
+                  />
+                )}
+              />
+            </Grid>
+          </Grid>
+          <Grid item sm={12}>
             <Controller
               control={control}
               name="city"
               defaultValue=""
+              rules={{
+                required: "Vui lòng nhập thông tin",
+              }}
               render={({ field: { onBlur, onChange, value } }) => (
                 <FormControl
                   fullWidth
                   sx={{
-                    margin: " 6px 0 5px 0",
+                    margin: "6px 0 5px 0",
                   }}
                 >
                   <InputLabel id="demo-simple-select-label">
@@ -227,11 +303,18 @@ function Address({ addArressApi }: { addArressApi: (data: {}) => void }) {
                 </FormControl>
               )}
             />
-
+            <SpanText isCheckValidateUser>
+              {errors?.city && <span> &#160; {errors.city?.message}</span>}
+            </SpanText>
+          </Grid>
+          <Grid item sm={12}>
             <Controller
               control={control}
               name="district"
               defaultValue=""
+              rules={{
+                required: "Vui lòng nhập thông tin",
+              }}
               render={({ field: { onBlur, onChange, value } }) => (
                 <FormControl
                   fullWidth
@@ -260,10 +343,20 @@ function Address({ addArressApi }: { addArressApi: (data: {}) => void }) {
                 </FormControl>
               )}
             />
+            <SpanText isCheckValidateUser>
+              {errors?.district && (
+                <span> &#160; {errors.district?.message}</span>
+              )}
+            </SpanText>
+          </Grid>
+          <Grid item sm={12}>
             <Controller
               control={control}
               name="commune"
               defaultValue=""
+              rules={{
+                required: "Vui lòng nhập thông tin",
+              }}
               render={({ field: { onBlur, onChange, value } }) => (
                 <FormControl
                   fullWidth
@@ -290,8 +383,14 @@ function Address({ addArressApi }: { addArressApi: (data: {}) => void }) {
                 </FormControl>
               )}
             />
+            <SpanText isCheckValidateUser>
+              {errors?.commune && (
+                <span> &#160; {errors.commune?.message}</span>
+              )}
+            </SpanText>
+          </Grid>
 
-            {/* <TextField
+          {/* <TextField
               required
               margin="dense"
               id="district"
@@ -300,7 +399,7 @@ function Address({ addArressApi }: { addArressApi: (data: {}) => void }) {
               fullWidth
               variant="outlined"
             /> */}
-            {/* <TextField
+          {/* <TextField
               required
               margin="dense"
               id="commune"
@@ -309,11 +408,14 @@ function Address({ addArressApi }: { addArressApi: (data: {}) => void }) {
               fullWidth
               variant="outlined"
             /> */}
-
+          <Grid item sm={12}>
             <Controller
               control={control}
               name="addressDetail"
               defaultValue=""
+              rules={{
+                required: "Vui lòng nhập thông tin",
+              }}
               render={({ field: { onBlur, onChange, value } }) => (
                 <FormControl fullWidth>
                   <TextField
@@ -329,90 +431,35 @@ function Address({ addArressApi }: { addArressApi: (data: {}) => void }) {
                 </FormControl>
               )}
             />
-          </DialogContent>
-          <DialogActions>
-            <Button
-              onClick={handleClose}
-              variant="contained"
-              sx={{
-                fontSize: 12,
-              }}
-            >
-              Trở lại
-            </Button>
-            <Button
-              type="submit"
-              variant="contained"
-              sx={{
-                fontSize: 12,
-              }}
-              onClick={handleSubmit(onSubmit)}
-            >
-              Xác nhận
-            </Button>
-          </DialogActions>
-        </Dialog>
-        <FlexCenter
-          justifyContent="space-between"
-          style={{
-            padding: " 20px 0",
-            borderBottom: "1px solid #807f7f",
-          }}
-        >
-          <FlexCenter
-            flexColumn
-            justifyContent="start"
-            alignItems="start"
-            style={{
-              maxWidth: "70%",
+            <SpanText isCheckValidateUser>
+              {errors?.addressDetail && (
+                <span> &#160; {errors.addressDetail?.message}</span>
+              )}
+            </SpanText>
+          </Grid>
+        </DialogContent>
+        <DialogActions>
+          <Button
+            onClick={handleClose}
+            variant="contained"
+            sx={{
+              fontSize: 12,
             }}
           >
-            <p
-              style={{
-                display: "flex",
-                fontSize: 16,
-                margin: "5px 0",
-              }}
-            >
-              Lê Hữu Dũng
-              <DividerCol color="#161515" height="20px"></DividerCol> 0374188281
-            </p>
-            <p
-              style={{
-                maxWidth: "60%",
-                fontWeight: 300,
-              }}
-            >
-              Số 27, Ngách 83/51 Ngõ 83 Đường Tân Triều Xã Tân Triều, Huyện
-              Thanh Trì, Hà Nội
-            </p>
-          </FlexCenter>
-          <FlexCenter flexColumn justifyContent="end" alignItems="end">
-            <Button
-              variant="text"
-              style={{
-                marginBottom: "1rem",
-                fontSize: 14,
-              }}
-            >
-              Cập nhật
-            </Button>
-            <Button
-              variant="outlined"
-              color="secondary"
-              style={{
-                fontSize: 14,
-              }}
-              onClick={handleDefaultAddress}
-            >
-              Thiết lập mặc định
-            </Button>
-          </FlexCenter>
-        </FlexCenter>
-      </HeaderAddress>
-      {/* <MainAddress>
-
-      </MainAddress> */}
+            Trở lại
+          </Button>
+          <Button
+            type="submit"
+            variant="contained"
+            sx={{
+              fontSize: 12,
+            }}
+            onClick={handleSubmit(onSubmit)}
+          >
+            Xác nhận
+          </Button>
+        </DialogActions>
+      </Dialog>
     </Box>
   );
 }

@@ -28,7 +28,7 @@ type FormValues = {
 };
 const MyInformation = ({ dataUser }: { dataUser?: dataUser }) => {
   const { addNoteMutation, data, isLoading } = useProfile();
-
+  console.log("123123123123acb");
   useEffect(() => {
     setValue("email", data?.email);
     setValue("name", data?.fullName);
@@ -42,7 +42,6 @@ const MyInformation = ({ dataUser }: { dataUser?: dataUser }) => {
     handleSubmit,
     formState: { errors },
     control,
-    getValues,
     setValue,
   } = useForm<FormValues>({
     defaultValues: {
@@ -75,7 +74,6 @@ const MyInformation = ({ dataUser }: { dataUser?: dataUser }) => {
   // }
 
   const onSubmit = (data: FormValues) => {
-    console.log("123");
     const newObj: Profile = {
       Address: data?.address,
       Gender: data.gender,
@@ -89,11 +87,6 @@ const MyInformation = ({ dataUser }: { dataUser?: dataUser }) => {
 
   return (
     <Box className="bodyBox" sx={{ width: "100%", marginLeft: "50px" }}>
-      {/* <form
-        style={{ display: "flex", justifyContent: "center", flex: "1" }}
-        onSubmit={handleSubmit(onSubmit)}
-        noValidate
-      > */}
       <FormRow
         style={{
           display: "flex",
@@ -123,10 +116,10 @@ const MyInformation = ({ dataUser }: { dataUser?: dataUser }) => {
 
           <Grid item sm={12}>
             <Grid container>
-              <Grid sm={2.5} display={"flex"} alignItems={"center"}>
+              <Grid sm={2.5} item display={"flex"} alignItems={"center"}>
                 <SpanTextRegister>Họ và tên:</SpanTextRegister>
               </Grid>
-              <Grid sm={7}>
+              <Grid sm={7} item>
                 <Controller
                   control={control}
                   name="name"
@@ -152,10 +145,10 @@ const MyInformation = ({ dataUser }: { dataUser?: dataUser }) => {
           </Grid>
           <Grid item sm={12}>
             <Grid container>
-              <Grid sm={2.5} display={"flex"} alignItems={"center"}>
+              <Grid sm={2.5} item display={"flex"} alignItems={"center"}>
                 <SpanTextRegister>Số điện thoại:</SpanTextRegister>
               </Grid>
-              <Grid sm={7}>
+              <Grid sm={7} item>
                 <Controller
                   control={control}
                   name="phone"
@@ -193,10 +186,10 @@ const MyInformation = ({ dataUser }: { dataUser?: dataUser }) => {
           </Grid>
           <Grid item sm={12}>
             <Grid container>
-              <Grid sm={2.5} display={"flex"} alignItems={"center"}>
+              <Grid sm={2.5} item display={"flex"} alignItems={"center"}>
                 <SpanTextRegister>Email</SpanTextRegister>
               </Grid>
-              <Grid sm={7}>
+              <Grid sm={7} item>
                 <Controller
                   control={control}
                   name="email"
@@ -226,7 +219,7 @@ const MyInformation = ({ dataUser }: { dataUser?: dataUser }) => {
                   )}
                 </SpanText>
               </Grid>
-              <Grid
+              {/* <Grid
                 sm={1.5}
                 style={{
                   display: "flex",
@@ -246,15 +239,15 @@ const MyInformation = ({ dataUser }: { dataUser?: dataUser }) => {
                 >
                   Thay đổi
                 </Button>
-              </Grid>
+              </Grid> */}
             </Grid>
           </Grid>
           <Grid item sm={12}>
             <Grid container>
-              <Grid sm={2.5} display={"flex"} alignItems={"center"}>
+              <Grid sm={2.5} item display={"flex"} alignItems={"center"}>
                 <SpanTextRegister>Địa chỉ:</SpanTextRegister>
               </Grid>
-              <Grid sm={7}>
+              <Grid sm={7} item>
                 <Controller
                   control={control}
                   name="address"
@@ -283,10 +276,10 @@ const MyInformation = ({ dataUser }: { dataUser?: dataUser }) => {
 
           <Grid item sm={12}>
             <Grid container>
-              <Grid sm={2.5} display={"flex"} alignItems={"center"}>
+              <Grid sm={2.5} item display={"flex"} alignItems={"center"}>
                 <SpanTextRegister>Giới tính</SpanTextRegister>
               </Grid>
-              <Grid sm={7}>
+              <Grid sm={7} item>
                 <Controller
                   control={control}
                   name="gender"
@@ -322,10 +315,10 @@ const MyInformation = ({ dataUser }: { dataUser?: dataUser }) => {
           </Grid>
           <Grid item sm={12}>
             <Grid container>
-              <Grid sm={2.5} display={"flex"} alignItems={"center"}>
+              <Grid sm={2.5} item display={"flex"} alignItems={"center"}>
                 <SpanTextRegister>Ngày sinh</SpanTextRegister>
               </Grid>
-              <Grid sm={7} alignItems={"center"}>
+              <Grid sm={7} item alignItems={"center"}>
                 <Controller
                   control={control}
                   name="birthday"
@@ -365,6 +358,7 @@ const MyInformation = ({ dataUser }: { dataUser?: dataUser }) => {
 
             <Grid
               sm={7}
+              item
               style={{
                 display: "flex",
                 flexDirection: "column",

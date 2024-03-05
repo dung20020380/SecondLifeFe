@@ -11,3 +11,8 @@ export const HeaderContainer =styled.div`
     }
     
 `
+export const LinkProfile = styled.a`
+    text-decoration: none;
+    width: 100%;
+    padding: "6px 16px";
+`

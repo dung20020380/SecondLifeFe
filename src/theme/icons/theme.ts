@@ -7,7 +7,7 @@ import styled, { css } from 'styled-components';
 type Props = {
     color?: string,
     height?: string,
-    flexColumn?: boolean,
+    flexcolumn?: string,
     justifyContent? : string,
     alignItems?: string,
 
@@ -66,7 +66,7 @@ export  const FlexCenter = styled.div<Props>`
     display: flex;
     justify-content: ${(props) => props.justifyContent || "center"}  ;
     align-items: ${(props) => props.alignItems || "center"}  ;
-    flex-direction: ${(props) => props.flexColumn ? 'column' : 'row'};
+    flex-direction: ${(props) => props.flexcolumn? 'column' : 'row'};
   
 `
 export const DividerRow = styled(Divider)`

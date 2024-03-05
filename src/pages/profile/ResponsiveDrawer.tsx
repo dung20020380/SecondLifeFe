@@ -64,7 +64,8 @@ function a11yProps(index: number) {
 }
 
 export default function BasicTabs() {
-  const { data, changeImgProfile, addArressApi } = useProfile();
+  const { data, changeImgProfile, addArressApi, setDefaultAddrress } =
+    useProfile();
 
   const [value, setValue] = React.useState(0);
   const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -78,6 +79,7 @@ export default function BasicTabs() {
   const [imageCrop, setImageCrop] = useState("");
   const [openDialog, setOpenDialog] = useState(false);
   const [preview, setPreview] = useState("");
+
   useEffect(() => {
     setImage(data?.profileImageUrl);
   }, [data]);
@@ -91,7 +93,7 @@ export default function BasicTabs() {
   };
 
   const handleSaveImageOnDialog = () => {
-    setImage(preview);
+    // setImage(preview);
     setOpenDialog(false);
     // console.log(typeof preview);
 
@@ -168,10 +170,6 @@ export default function BasicTabs() {
                   type="file"
                   accept="/image/*"
                   onChange={(e) => handleImageChange(e)}
-                  // style={{
-                  //   width: "390px",
-                  //   height: "295px",
-                  // }}
                 />
               ) : (
                 <Avatar
@@ -213,7 +211,11 @@ export default function BasicTabs() {
           <MyInformation dataUser={data} />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={1}>
-          <Address addArressApi={(data) => addArressApi.mutate(data)} />
+          <Address
+            dataUser={data}
+            addArressApi={(data) => addArressApi.mutate(data)}
+            setDedaultAddrress={(data) => setDefaultAddrress.mutate(data)}
+          />
         </CustomTabPanel>
         <CustomTabPanel value={value} index={2}>
           <Password />

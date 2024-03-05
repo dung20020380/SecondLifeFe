@@ -16,6 +16,10 @@ export const HeaderHome = styled.h3`
 export const LinkDetail = styled.a`
   text-decoration: none;
   color: #333;
+  &:hover {
+    transform: scale(1.05);
+    transition: transform 0.3s ease;
+  }
 `
 export const MainApp = styled.div`
   width: 80%;

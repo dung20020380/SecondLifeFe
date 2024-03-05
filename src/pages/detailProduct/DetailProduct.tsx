@@ -75,7 +75,7 @@ function DetailProduct() {
           </Grid>
           <Grid item sm={6}>
             <FlexCenter
-              flexColumn
+              flexcolumn={"true"}
               style={{
                 justifyContent: "space-around",
                 alignItems: "start",

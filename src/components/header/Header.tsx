@@ -4,10 +4,8 @@ import Button from "@mui/material/Button";
 import Menu from "@mui/material/Menu";
 import MenuItem from "@mui/material/MenuItem";
 import AccountCircleIcon from "@mui/icons-material/AccountCircle";
-import { HeaderContainer } from "./Header.styles";
-import Logout from "../logout";
+import { HeaderContainer, LinkProfile } from "./Header.styles";
 import Login from "../login";
-import Register from "../register";
 import { DividerCol, FlexCenter } from "../../theme/icons/theme";
 import { styled, alpha } from "@mui/material/styles";
 import InputBase from "@mui/material/InputBase";
@@ -61,7 +59,8 @@ const StyledInputBase = styled(InputBase)(({ theme }) => ({
 
 function Header() {
   const authUser = useSelector((state: any) => state.user);
-  console.log("authUser", authUser);
+
+  const bffLogoutUrl = authUser?.bffLogoutUrl;
 
   const navigate = useNavigate();
 
@@ -73,6 +72,7 @@ function Header() {
   const handleClose = () => {
     setAnchorEl(null);
   };
+
   return (
     <HeaderContainer>
       <h2
@@ -141,27 +141,19 @@ function Header() {
                 }}
               >
                 <MenuItem onClick={handleClose}>
-                  <a
-                    style={{
-                      textDecoration: "none",
-                    }}
-                    href={PAGES.profile}
-                  >
+                  <LinkProfile href={PAGES.profile}>
                     Thông tin cá nhân
-                  </a>
+                  </LinkProfile>
                 </MenuItem>
                 <MenuItem onClick={handleClose}>
-                  <a
-                    style={{
-                      textDecoration: "none",
-                    }}
-                    href={PAGES.sellProduct}
+                  <LinkProfile href={PAGES.sellProduct}>Đăng bán</LinkProfile>
+                </MenuItem>
+                <MenuItem onClick={handleClose}>
+                  <LinkProfile
+                    href={bffLogoutUrl ? bffLogoutUrl : "/bff/logout"}
                   >
-                    Đăng bán
-                  </a>
-                </MenuItem>
-                <MenuItem onClick={handleClose}>
-                  <Logout></Logout>
+                    Đăng xuất
+                  </LinkProfile>
                 </MenuItem>
               </Menu>
             </div>
@@ -169,8 +161,6 @@ function Header() {
         ) : (
           <FlexCenter>
             <Login></Login>
-            {/* <DividerCol color="#FFF" height="20px"></DividerCol> */}
-            {/* <Register></Register> */}
           </FlexCenter>
         )}
       </FlexCenter>
@@ -178,4 +168,4 @@ function Header() {
   );
 }
 
-export default Header;
+export default React.memo(Header);

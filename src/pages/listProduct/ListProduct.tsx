@@ -15,12 +15,82 @@ import { FlexCenter } from "../../theme/icons/theme";
 import { ImageSlide, LinkDetail } from "../home/home.styles";
 import { PAGES } from "../../routes/constants";
 import useProductByCatelory from "../../api/getProductByCatelory";
+import { Fragment, useState } from "react";
+import AppPagination from "../../components/pagination";
+import React from "react";
+import { Box, Button, Grid, Stack, Typography } from "@mui/material";
 
 function ListProduct() {
-  const {} = useProductByCatelory();
+  const [pageCurrent, setPageCurrent] = useState(1);
+
+  const { handleApiChangePage, data } = useProductByCatelory();
+
+  const handleChangePage = (value: number) => {
+    setPageCurrent(value);
+    handleApiChangePage(value);
+  };
+  let testData;
+
+  if (data) {
+    testData = Object.entries(data as Object).map(([key, value]) => ({
+      key,
+      value,
+    }));
+  }
   return (
-    <>
-      <Swiper
+    <Stack flexDirection="column" flex={1} justifyContent="start">
+      <Grid container spacing={2}>
+        {React.Children.toArray(
+          testData?.map((item: any) => (
+            <Fragment>
+              {React.Children.toArray(
+                item?.value?.map((subitem: any) => (
+                  <Grid item xs={2.4}>
+                    <Stack
+                      flexDirection="column"
+                      alignItems="start"
+                      sx={{ backgroundColor: "#fff" }}
+                      borderRadius={2}
+                      height="100%"
+                    >
+                      <LinkDetail href={PAGES.detailProduct}>
+                        <ImageSlide
+                          src={subitem?.mediaInfo?.imageUrl}
+                          alt=""
+                          style={{
+                            width: "100%",
+                          }}
+                        />
+                        <Typography fontSize={14}>
+                          {subitem?.listingInfo?.title}
+                        </Typography>
+                        <Typography fontSize={16} mt={1}>
+                          {subitem?.price}
+                        </Typography>
+                        {/* <p>{item.address}</p> */}
+                      </LinkDetail>
+                    </Stack>
+                  </Grid>
+                ))
+              )}
+            </Fragment>
+          ))
+        )}
+      </Grid>
+      <Box mb={2}>
+        <AppPagination
+          callbackChangePage={(value) => handleChangePage(value)}
+          count={3}
+          page={pageCurrent}
+        />
+      </Box>
+    </Stack>
+  );
+}
+
+export default ListProduct;
+{
+  /* <Swiper
         modules={[Navigation, Pagination, Keyboard, A11y]}
         spaceBetween={10}
         slidesPerView={6}
@@ -38,7 +108,7 @@ function ListProduct() {
           return (
             <SwiperSlide key={index}>
               <FlexCenter
-                flexColumn
+                flexcolumn={"true"}
                 style={{
                   alignItems: "start",
                 }}
@@ -59,9 +129,5 @@ function ListProduct() {
             </SwiperSlide>
           );
         })}
-      </Swiper>
-    </>
-  );
+      </Swiper> */
 }
-
-export default ListProduct;

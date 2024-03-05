@@ -36,7 +36,6 @@ export function useAuthUser() {
           const userNewData = {
             given_name, family_name, email, id, roles, bffLogoutUrl
           }
-          console.log("userNewData",userNewData)
           setUser({ given_name, family_name, email, id, roles, bffLogoutUrl });
           dispatch(addUser(userNewData))
       }

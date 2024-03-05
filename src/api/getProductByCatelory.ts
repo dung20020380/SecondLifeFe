@@ -1,17 +1,28 @@
-import { useQuery } from "react-query";
+import { useMutation, useQuery } from "react-query";
 import { get } from ".";
+import { useState } from "react";
 
 
-const fetchProduct = async () => {
-    const response = await get("/api/basecatalog?pageNumber=1&pageSize=3", {});
+const fetchProduct = async (page: number) => {
+    const response = await get(`/api/basecatalog?pageNumber=${page}&pageSize=3`, {});
     return response;
 };
 
+
+
 const useProductByCatelory = () => {
-    const { isLoading, error, data } = useQuery("useProductByCatelory", fetchProduct, {
-        retry: false,
-    });
-    return { isLoading, error, data };
+    const [page, handleApiChangePage] = useState(1)
+    const { isLoading, error, data } = useQuery(
+        { 
+          queryKey:  ["useProductByCatelory", page],
+          queryFn:() =>  fetchProduct(page),
+          retry: false,
+        }
+    )
+    // const handleChangePageMutaion = useMutation({
+    //     mutationFn: (page:number)=> handleChangePage(page),
+    // })
+    return { isLoading, error, data, handleApiChangePage };
 };
 
 export default useProductByCatelory;

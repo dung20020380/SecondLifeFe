@@ -7,12 +7,6 @@ import { PAGES } from "../../routes/constants";
 import React, { Fragment } from "react";
 
 function TopProduct({ listProduct }: { listProduct?: any }) {
-  listProduct?.map((item: any, index: any) => {
-    item?.value?.map((subitem: any, index: any) => {
-      console.log("listProduct1", subitem?.price);
-    });
-  });
-
   return (
     <div
       style={{
@@ -42,33 +36,40 @@ function TopProduct({ listProduct }: { listProduct?: any }) {
           marginTop: "5px",
         }}
       >
-        {listProduct?.map((item: any, index: any) => (
-          <Fragment>
-            {item?.value?.map((subitem: any) => (
-              <Grid item xs={2} key={index}>
-                <FlexCenter
-                  flexColumn
-                  style={{
-                    alignItems: "start",
-                  }}
-                >
-                  <LinkDetail href={PAGES.detailProduct}>
-                    <ImageSlide
-                      src={subitem?.mediaInfo?.imageUrl}
-                      alt=""
+        {React.Children.toArray(
+          listProduct?.map((item: any) => (
+            <Fragment>
+              {React.Children.toArray(
+                item?.value?.map((subitem: any) => (
+                  <Grid item xs={2}>
+                    <FlexCenter
+                      flexcolumn={"true"}
                       style={{
-                        width: "100%",
+                        alignItems: "start",
                       }}
-                    />
-                    <p>{subitem?.listingInfo?.title}</p>
-                    <p>{subitem?.price}</p>
-                    {/* <p>{item.address}</p> */}
-                  </LinkDetail>
-                </FlexCenter>
-              </Grid>
-            ))}
-          </Fragment>
-        ))}
+                    >
+                      <LinkDetail href={PAGES.detailProduct}>
+                        <ImageSlide
+                          src={
+                            subitem?.mediaInfo?.imageUrl ||
+                            "src/assets/image/defaultImage.jpg"
+                          }
+                          alt=""
+                          style={{
+                            width: "100%",
+                          }}
+                        />
+                        <p>{subitem?.listingInfo?.title}</p>
+                        <p>{subitem?.price}</p>
+                        {/* <p>{item.address}</p> */}
+                      </LinkDetail>
+                    </FlexCenter>
+                  </Grid>
+                ))
+              )}
+            </Fragment>
+          ))
+        )}
       </Grid>
     </div>
   );

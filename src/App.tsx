@@ -4,9 +4,11 @@ import React, { useEffect } from "react";
 import Routes from "./routes/routes";
 import "react-datepicker/dist/react-datepicker.css";
 import { useAuthUser } from "./open-id/useAuthUser";
+import useAddProduct from "./api/useAddProduct";
 export default function App() {
   const authUser = useAuthUser();
-  // useApi();
+  const { data } = useAddProduct();
+  console.log("123123data", data);
   // const { mutate: postTokenMutation, data: token, error } = usePostToken();
   // useEffect(() => {
   //   // Trigger the mutation when the component mounts

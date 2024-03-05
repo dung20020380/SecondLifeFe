@@ -313,7 +313,11 @@ const UploadProductTwo: React.FC<UploadProductOneProps> = ({ setStep }) => {
               }}
             >
               <SellAddress />
-              <FlexCenter flexColumn justifyContent="end" alignItems="end">
+              <FlexCenter
+                flexcolumn={"true"}
+                justifyContent="end"
+                alignItems="end"
+              >
                 <Button
                   variant="text"
                   style={{
@@ -386,7 +390,11 @@ const UploadProductTwo: React.FC<UploadProductOneProps> = ({ setStep }) => {
         <DialogContent>
           <FlexCenter>
             <SellAddress />
-            <FlexCenter flexColumn justifyContent="end" alignItems="end">
+            <FlexCenter
+              flexcolumn={"true"}
+              justifyContent="end"
+              alignItems="end"
+            >
               <Button
                 variant="outlined"
                 style={{

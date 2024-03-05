@@ -6,7 +6,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { dataUser } from "../model/user";
 import { FormValuesPass } from "../model/changePass";
 import { get, post, put } from ".";
-
+import {toast} from 'react-toastify'
 const config = {
     headers: {
         "X-CSRF": "1",
@@ -42,7 +42,11 @@ const addArress = (data: {}, idUser: string) =>  {
   )
 }
   
-
+const DedaultAddrress = (data: {}, idUser: string) =>  {
+  return(
+    post(`/api/UserProfile/set-addressdefault-user/${idUser}`, data)
+  )
+}
 
 const useProfile = () => {
   const idUser= useSelector((state:any) => 
@@ -56,21 +60,55 @@ const useProfile = () => {
       retry: false,
     }
   )
+  
   const addNoteMutation = useMutation({
-    mutationFn:(data:Profile )=> changeProfile(data, idUser) 
+    mutationFn:(data:Profile )=> changeProfile(data, idUser), 
+    onSuccess: () => {
+      toast.success("Thay đổi thành công")
+    },
+    onError:  () => {
+      toast.error("Thay đổi thất bại")
+    },
   })
 
   const changePassword = useMutation({
-    mutationFn:(data:FormValuesPass )=> changePass(data, idUser) 
+    mutationFn:(data:FormValuesPass )=> changePass(data, idUser) ,
+    onSuccess: () => {
+      toast.success("Thay đổi thành công")
+    },
+    onError:  () => {
+      toast.error("Mật khẩu cũ không chính xác")
+    },
   })
   const changeImgProfile = useMutation({
-    mutationFn:(data:ImageBase64 )=> changeImg(data, idUser) 
+    mutationFn:(data:ImageBase64 )=> changeImg(data, idUser) ,
+    onSuccess: () => {
+      toast.success("Thay đổi thành công")
+    },
+    onError:  () => {
+      toast.error("Thay đổi thất bại")
+    },
   })
   const addArressApi = useMutation({
-    mutationFn:(data:{} )=> addArress(data, idUser) 
+    mutationFn:(data:{} )=> addArress(data, idUser),
+    onSuccess: () => {
+      toast.success("Thêm địa chỉ thành công")
+    },
+    onError:  () => {
+      toast.error("Thêm địa chỉ thất bại")
+    },
+  })
+  const setDefaultAddrress = useMutation({
+    mutationFn:(data:{} )=> DedaultAddrress(data, idUser),
+    onSuccess: () => {
+      toast.success("Đặt địa chỉ mặc định thành công")
+    },
+    onError:  () => {
+      toast.error("Đặt địa chỉ mặc định thất bại")
+    },
   })
   
-  return {isLoading, error, data, addNoteMutation, changePassword, changeImgProfile,addArressApi };
+  return {isLoading, error, data, addNoteMutation, changePassword, changeImgProfile,addArressApi,setDefaultAddrress };
 };
 
 

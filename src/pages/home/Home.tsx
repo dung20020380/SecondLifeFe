@@ -142,7 +142,6 @@ function Home() {
   const { data } = listproduct();
 
   const ListCatelory = catelory.map((item) => item.name);
-  // const testData = data?.motorcycles;
   let testData;
   if (data) {
     testData = Object.entries(data as Object).map(([key, value]) => ({
@@ -150,7 +149,6 @@ function Home() {
       value,
     }));
   }
-  // console.log("data", testData);
 
   return (
     <>
@@ -208,7 +206,7 @@ function Home() {
         <TopProduct listProduct={testData} />
       </div>
       <div>
-        <FreeProduct />
+        <FreeProduct listProduct={testData} />
       </div>
       <div>
         <MapProduct />

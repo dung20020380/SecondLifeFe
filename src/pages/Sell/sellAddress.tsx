@@ -5,7 +5,7 @@ function SellAddress() {
   return (
     <Fragment>
       <FlexCenter
-        flexColumn
+        flexcolumn={"true"}
         justifyContent="start"
         alignItems="start"
         style={{

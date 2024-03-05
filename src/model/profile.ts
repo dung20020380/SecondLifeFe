@@ -9,3 +9,12 @@ export type Profile = {
 export type ImageBase64 = {
     Base64String  : string
 }
+export type FormAddress = {
+    name: string;
+    email: string;
+    phone: string;
+    city: string;
+    district: string;
+    commune: string;
+    addressDetail: string;
+};
